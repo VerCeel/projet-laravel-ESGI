@@ -23,8 +23,6 @@ jobs:
           cd /var/www/projet-annuel-ESGI26
           git fetch origin main
           git pull origin main
-          docker compose down --remove-orphans
-          docker system prune -f
-          docker image prune -a -f
-          docker compose build --no-cache --pull
-          docker compose up -d
+          docker-compose down 
+          docker-compose build
+          docker-compose up -d

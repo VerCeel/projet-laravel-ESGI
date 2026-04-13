@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "./services/api";
+import { createPost, deletePost, getPosts } from "./services/posts";
 import { Button } from "./components/ui/button";
 
 function App() {
@@ -52,7 +53,6 @@ function App() {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md text-black">
-     
       <p className="text-center">{message}</p>
       {userData && (
         <div>

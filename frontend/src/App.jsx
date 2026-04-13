@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import api from "./services/api";
-import { createPost, deletePost, getPosts } from "./services/posts";
 import { Button } from "./components/ui/button";
 
 function App() {

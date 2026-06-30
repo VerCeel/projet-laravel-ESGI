@@ -1,3 +1,5 @@
+"use client";
+
 import { Eye, Pencil, Trash2 } from "lucide-react";
 
 import { formatClientName, formatDate } from "@/components/clients/client-form";

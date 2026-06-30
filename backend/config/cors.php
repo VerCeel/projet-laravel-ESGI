@@ -7,8 +7,10 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://localhost:5173', // React dev server
+        'http://localhost:3000', // Next.js dev server
+        'http://localhost:5173',
         'http://165.22.22.160:5173',
+        'http://165.22.22.160:3000',
     ],
 
     'allowed_origins_patterns' => [],

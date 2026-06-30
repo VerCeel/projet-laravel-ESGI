@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -47,10 +49,10 @@ export default function OrderEditDialog({ order, open, onOpenChange, onUpdated }
 
   useEffect(() => {
     if (order && open) {
-      setValues(orderToForm(order));
+      setValues(orderToForm(order, products));
       setError("");
     }
-  }, [order, open]);
+  }, [order, open, products]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom";
-import { Code2, Feather } from "lucide-react";
+import Link from "next/link";
+import { Code2 } from "lucide-react";
+
+import CanariaLogo from "@/components/static/CanariaLogo";
 
 const footerLinks = [
   { to: "/", label: "Home" },
@@ -15,14 +17,9 @@ export default function Footer() {
     <footer className="border-t bg-background">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-10 md:px-6 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-sm space-y-3">
-          <div className="flex items-center gap-2">
-            <span className="flex size-8 items-center justify-center rounded-full bg-primary/10 text-primary ring-1 ring-primary/20">
-              <Feather className="size-4" />
-            </span>
-            <span className="text-lg font-semibold">Budgie</span>
-          </div>
+          <CanariaLogo />
           <p className="text-sm leading-relaxed text-muted-foreground">
-            A Laravel-powered platform with a modern React frontend. Create, browse,
+            A Laravel-powered platform with a modern Next.js frontend. Create, browse,
             and manage notes, clients, products, and orders.
           </p>
         </div>
@@ -34,7 +31,7 @@ export default function Footer() {
               {footerLinks.map((link) => (
                 <li key={link.to}>
                   <Link
-                    to={link.to}
+                    href={link.to}
                     className="text-sm text-muted-foreground transition hover:text-foreground"
                   >
                     {link.label}
@@ -48,7 +45,7 @@ export default function Footer() {
             <h3 className="text-sm font-semibold">Stack</h3>
             <ul className="space-y-2 text-sm text-muted-foreground">
               <li>Laravel 13 API</li>
-              <li>React + Vite</li>
+              <li>Next.js + React</li>
               <li>Tailwind CSS</li>
             </ul>
           </div>
@@ -75,8 +72,8 @@ export default function Footer() {
 
       <div className="border-t">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-4 py-4 text-xs text-muted-foreground md:flex-row md:px-6">
-          <p>© {new Date().getFullYear()} Budgie. All rights reserved.</p>
-          <p>Built with Laravel & React</p>
+          <p>© {new Date().getFullYear()} Canaria. All rights reserved.</p>
+          <p>Built with Laravel & Next.js</p>
         </div>
       </div>
     </footer>

@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { UserPlus } from "lucide-react";
 import { toast } from "sonner";
 
@@ -17,7 +20,7 @@ import { Label } from "@/components/ui/label";
 import { parseValidationErrors, register } from "@/services/auth";
 
 export default function RegisterForm() {
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -55,7 +58,7 @@ export default function RegisterForm() {
       toast.success("Account created", {
         description: "You can now sign in with your credentials.",
       });
-      navigate("/login", { replace: true });
+      router.replace("/login");
     } catch (error) {
       const validationErrors = parseValidationErrors(error);
       if (Object.keys(validationErrors).length > 0) {
@@ -170,7 +173,7 @@ export default function RegisterForm() {
           <p className="text-center text-sm text-muted-foreground">
             Already have an account?{" "}
             <Link
-              to="/login"
+              href="/login"
               className="font-medium text-primary underline-offset-4 hover:underline"
             >
               Sign in

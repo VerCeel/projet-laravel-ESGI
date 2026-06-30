@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { LogIn } from "lucide-react";
 import { toast } from "sonner";
 
@@ -18,8 +21,8 @@ import { Label } from "@/components/ui/label";
 import { parseValidationErrors } from "@/services/auth";
 
 export default function LoginForm() {
-  const navigate = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { login } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -27,7 +30,8 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const redirectTo = location.state?.from ?? "/";
+  const from = searchParams.get("from");
+  const redirectTo = from ?? "/products";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -44,7 +48,7 @@ export default function LoginForm() {
       toast.success("Welcome back!", {
         description: "You are now signed in.",
       });
-      navigate(redirectTo, { replace: true });
+      router.replace(redirectTo);
     } catch (error) {
       const validationErrors = parseValidationErrors(error);
       if (Object.keys(validationErrors).length > 0) {
@@ -125,8 +129,7 @@ export default function LoginForm() {
           <p className="text-center text-sm text-muted-foreground">
             Don&apos;t have an account?{" "}
             <Link
-              to="/register"
-              state={location.state}
+              href={from ? `/register?from=${encodeURIComponent(from)}` : "/register"}
               className="font-medium text-primary underline-offset-4 hover:underline"
             >
               Create one

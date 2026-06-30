@@ -1,3 +1,5 @@
+"use client";
+
 import { Mail, MapPin, Phone, User } from "lucide-react";
 
 import { formatClientName, formatDate } from "@/components/clients/client-form";

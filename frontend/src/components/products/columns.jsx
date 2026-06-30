@@ -1,3 +1,5 @@
+"use client";
+
 import { Eye, Pencil, Trash2 } from "lucide-react";
 
 import { formatPrice } from "@/components/products/product-form";

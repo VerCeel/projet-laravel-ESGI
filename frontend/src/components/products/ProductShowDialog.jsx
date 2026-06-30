@@ -1,3 +1,5 @@
+"use client";
+
 import { Package, Tag } from "lucide-react";
 
 import { formatPrice } from "@/components/products/product-form";

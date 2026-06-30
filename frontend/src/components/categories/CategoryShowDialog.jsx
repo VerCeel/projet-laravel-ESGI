@@ -1,3 +1,5 @@
+"use client";
+
 import { Calendar, Tag } from "lucide-react";
 
 import {

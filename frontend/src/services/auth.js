@@ -1,4 +1,5 @@
 import { clearToken, setToken } from "@/lib/token";
+import { clearUser, setUser } from "@/lib/user";
 
 import api from "./api";
 
@@ -17,11 +18,20 @@ export async function logout() {
     await api.post("/logout");
   } finally {
     clearToken();
+    clearUser();
   }
 }
 
-export function saveSession(token) {
+export async function fetchCurrentUser() {
+  const response = await api.get("/user");
+  return response.data;
+}
+
+export function saveSession(token, user) {
   setToken(token);
+  if (user) {
+    setUser(user);
+  }
 }
 
 export function parseValidationErrors(error) {

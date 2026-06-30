@@ -105,3 +105,18 @@ it('requires authentication', function () {
 
     $this->postJson('/api/commands', [])->assertUnauthorized();
 });
+
+it('seeds consistent commands (total matches items, stock stays valid)', function () {
+    $this->seed();
+
+    expect(Commands::count())->toBeGreaterThan(0);
+
+    Commands::with('products')->get()->each(function ($command) {
+        $expected = $command->products->sum(
+            fn ($product) => $product->pivot->quantity * $product->pivot->unit_price,
+        );
+        expect((float) $command->total)->toBe((float) $expected);
+    });
+
+    expect(Product::where('stock', '<', 0)->count())->toBe(0);
+});

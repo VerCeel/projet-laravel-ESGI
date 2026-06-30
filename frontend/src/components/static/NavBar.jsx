@@ -1,16 +1,40 @@
-import { NavLink } from "react-router-dom";
-import { Feather, Home, Package, Rows3, Tag } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { Feather, Home, LogIn, LogOut, Package, Rows3, ShoppingCart, Tag, UserPlus } from "lucide-react";
+import { toast } from "sonner";
 
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const links = [
+const publicLinks = [
   { to: "/", label: "Home", icon: Home, end: true },
   { to: "/posts", label: "Posts", icon: Rows3 },
+];
+
+const protectedLinks = [
   { to: "/categories", label: "Categories", icon: Tag },
   { to: "/products", label: "Products", icon: Package },
+  { to: "/commands", label: "Commands", icon: ShoppingCart },
 ];
 
 export default function NavBar() {
+  const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const links = isAuthenticated
+    ? [...publicLinks, ...protectedLinks]
+    : publicLinks;
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Signed out");
+      navigate("/");
+    } catch {
+      toast.error("Could not sign out");
+    }
+  };
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b bg-background/80 backdrop-blur-xl">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 md:px-6">
@@ -44,6 +68,33 @@ export default function NavBar() {
               <span className="sr-only sm:hidden">{label}</span>
             </NavLink>
           ))}
+
+          {isAuthenticated ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="ml-1 gap-1.5 text-xs md:text-sm"
+              onClick={handleLogout}
+            >
+              <LogOut className="size-3.5 md:size-4" />
+              <span className="hidden sm:inline">Sign out</span>
+            </Button>
+          ) : (
+            <>
+              <Button asChild variant="ghost" size="sm" className="ml-1 gap-1.5 text-xs md:text-sm">
+                <NavLink to="/login">
+                  <LogIn className="size-3.5 md:size-4" />
+                  <span className="hidden sm:inline">Sign in</span>
+                </NavLink>
+              </Button>
+              <Button asChild size="sm" className="gap-1.5 text-xs md:text-sm">
+                <NavLink to="/register">
+                  <UserPlus className="size-3.5 md:size-4" />
+                  <span className="hidden sm:inline">Register</span>
+                </NavLink>
+              </Button>
+            </>
+          )}
         </div>
       </nav>
     </header>

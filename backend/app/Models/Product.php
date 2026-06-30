@@ -24,4 +24,11 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function commands()
+    {
+        return $this->belongsToMany(Commands::class, 'command_product', 'product_id', 'command_id')
+            ->withPivot('quantity', 'unit_price')
+            ->withTimestamps();
+    }
 }

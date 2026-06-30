@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommandsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ClientController;
@@ -24,5 +25,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('categories', CategoryController::class);
     Route::apiResource('products', ProductController::class);
     Route::apiResource('clients', ClientController::class);
+    Route::apiResource('commands', CommandsController::class);
     Route::post('/logout', [AuthController::class, 'logout']);
 });

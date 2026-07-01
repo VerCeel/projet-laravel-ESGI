@@ -12,13 +12,14 @@ import OrderShowDialog from "@/components/orders/OrderShowDialog";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
-import { deleteOrder, getOrders } from "@/services/orders";
+import { deleteOrder, downloadOrderInvoice, getOrders } from "@/services/orders";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
+  const [downloadingId, setDownloadingId] = useState(null);
 
   const [showOrder, setShowOrder] = useState(null);
   const [showOpen, setShowOpen] = useState(false);
@@ -64,6 +65,23 @@ export default function OrdersPage() {
     setDeleteOpen(true);
   }, []);
 
+  const handleDownloadInvoice = useCallback(async (order) => {
+    setDownloadingId(order.id);
+
+    try {
+      await downloadOrderInvoice(order.id);
+      toast.success("Invoice downloaded", {
+        description: `Invoice for order #${order.id} has been saved.`,
+      });
+    } catch {
+      toast.error("Download failed", {
+        description: `Could not download the invoice for order #${order.id}.`,
+      });
+    } finally {
+      setDownloadingId(null);
+    }
+  }, []);
+
   const handleDeleteConfirm = async () => {
     if (!deleteOrderTarget) return;
 
@@ -93,9 +111,11 @@ export default function OrdersPage() {
         onView: handleView,
         onEdit: handleEdit,
         onDelete: handleDeleteClick,
+        onDownload: handleDownloadInvoice,
         deletingId,
+        downloadingId,
       }),
-    [deletingId, handleView, handleEdit, handleDeleteClick],
+    [deletingId, downloadingId, handleView, handleEdit, handleDeleteClick, handleDownloadInvoice],
   );
 
   return (

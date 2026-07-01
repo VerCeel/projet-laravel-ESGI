@@ -1,6 +1,6 @@
 "use client";
 
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, FileDown, Pencil, Trash2 } from "lucide-react";
 
 import {
   formatDate,
@@ -13,7 +13,7 @@ import { formatPrice } from "@/components/products/product-form";
 import { Button } from "@/components/ui/button";
 import { DataTableColumnHeader } from "@/components/ui/data-table";
 
-export function getOrderColumns({ onView, onEdit, onDelete, deletingId }) {
+export function getOrderColumns({ onView, onEdit, onDelete, onDownload, deletingId, downloadingId }) {
   return [
     {
       accessorKey: "id",
@@ -71,11 +71,21 @@ export function getOrderColumns({ onView, onEdit, onDelete, deletingId }) {
       cell: ({ row }) => {
         const order = row.original;
         const isDeleting = deletingId === order.id;
+        const isDownloading = downloadingId === order.id;
 
         return (
           <div className="flex justify-end gap-1">
             <Button variant="ghost" size="icon-sm" onClick={() => onView(order)} title="View">
               <Eye className="size-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              disabled={isDownloading}
+              onClick={() => onDownload(order)}
+              title="Download invoice"
+            >
+              <FileDown className="size-4" />
             </Button>
             <Button variant="ghost" size="icon-sm" onClick={() => onEdit(order)} title="Edit">
               <Pencil className="size-4" />

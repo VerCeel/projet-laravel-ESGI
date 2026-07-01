@@ -1,6 +1,8 @@
 "use client";
 
-import { ShoppingCart } from "lucide-react";
+import { useState } from "react";
+import { FileDown, ShoppingCart } from "lucide-react";
+import { toast } from "sonner";
 
 import {
   formatDate,
@@ -10,16 +12,37 @@ import {
   statusLabel,
 } from "@/components/orders/order-form";
 import { formatPrice } from "@/components/products/product-form";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { downloadOrderInvoice } from "@/services/orders";
 
 export default function OrderShowDialog({ order, open, onOpenChange }) {
+  const [downloading, setDownloading] = useState(false);
+
   if (!order) return null;
+
+  const handleDownloadInvoice = async () => {
+    setDownloading(true);
+    try {
+      await downloadOrderInvoice(order.id);
+      toast.success("Invoice downloaded", {
+        description: `Invoice for order #${order.id} has been saved.`,
+      });
+    } catch {
+      toast.error("Download failed", {
+        description: `Could not download the invoice for order #${order.id}.`,
+      });
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -74,6 +97,13 @@ export default function OrderShowDialog({ order, open, onOpenChange }) {
             </div>
           </dl>
         </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={handleDownloadInvoice} disabled={downloading}>
+            <FileDown data-icon="inline-start" />
+            {downloading ? "Downloading..." : "Download invoice"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
